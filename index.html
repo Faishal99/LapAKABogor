@@ -7,18 +7,19 @@
   <style>
     body {
       font-family: Poppins, sans-serif;
-      background: #f8f9fa;
+      background: #f1f1f1;
       margin: 0;
       padding: 20px;
     }
     h1 {
       text-align: center;
       color: #e63946;
+      margin-bottom: 5px;
     }
-    .kategori {
-      margin: 20px 0;
-      font-weight: bold;
-      color: #264653;
+    p.desc {
+      text-align: center;
+      color: #555;
+      margin-top: 0;
     }
     .produk-container {
       display: flex;
@@ -27,11 +28,11 @@
       justify-content: center;
     }
     .produk {
-      border: 1px solid #ccc;
-      padding: 15px;
-      border-radius: 10px;
-      width: 200px;
       background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 200px;
       text-align: center;
     }
     .produk img {
@@ -40,10 +41,9 @@
     }
     .produk h3 {
       margin: 10px 0 5px;
-      font-size: 16px;
     }
     .produk p {
-      color: #888;
+      color: #777;
       margin: 0 0 10px;
     }
     .produk button {
@@ -64,40 +64,55 @@
       padding: 10px 15px;
       border-radius: 50px;
       cursor: pointer;
+      font-size: 18px;
     }
     #keranjang-modal {
       display: none;
       position: fixed;
-      top: 50px;
-      right: 50px;
-      width: 300px;
+      top: 70px;
+      right: 30px;
+      width: 320px;
       background: white;
       border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 20px;
-      box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      z-index: 99;
     }
     #keranjang-items {
-      max-height: 200px;
+      max-height: 220px;
       overflow-y: auto;
       margin-bottom: 15px;
+      font-size: 14px;
     }
     .checkout-btn {
       background: #e63946;
       color: white;
       padding: 10px;
       text-align: center;
-      border-radius: 5px;
+      border-radius: 6px;
       text-decoration: none;
       display: block;
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #555;
+    }
+    select {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
 
 <h1>LapAKABogor</h1>
+<p class="desc">Platform dagang UKM Mahasiswa Politeknik AKA Bogor</p>
 
-<div class="kategori">Makanan</div>
 <div class="produk-container">
   <div class="produk" data-nama="Keripik Pisang" data-harga="10000">
     <img src="https://via.placeholder.com/200" alt="Keripik Pisang">
@@ -111,10 +126,6 @@
     <p>Rp15.000</p>
     <button onclick="tambahKeKeranjang(this)">Tambah</button>
   </div>
-</div>
-
-<div class="kategori">Kerajinan</div>
-<div class="produk-container">
   <div class="produk" data-nama="Gelang Rajut" data-harga="25000">
     <img src="https://via.placeholder.com/200" alt="Gelang Rajut">
     <h3>Gelang Rajut</h3>
@@ -124,12 +135,19 @@
 </div>
 
 <!-- Tombol Keranjang -->
-<button id="keranjang-btn" onclick="toggleKeranjang()">🛒 Keranjang</button>
+<button id="keranjang-btn" onclick="toggleKeranjang()">🛒</button>
 
 <!-- Modal Keranjang -->
 <div id="keranjang-modal">
   <h3>Keranjang Belanja</h3>
   <div id="keranjang-items"></div>
+
+  <label for="pengiriman">Pilih Metode:</label>
+  <select id="pengiriman" onchange="tampilkanKeranjang()">
+    <option value="ambil">Ambil Sendiri</option>
+    <option value="antar">Diantar (Rp1.000/item)</option>
+  </select>
+
   <p>Total: Rp<span id="total-harga">0</span></p>
   <a id="checkout-link" href="#" class="checkout-btn" target="_blank">Checkout WhatsApp</a>
 </div>
@@ -153,19 +171,31 @@
 
   function tampilkanKeranjang() {
     const daftar = document.getElementById('keranjang-items');
-    const total = document.getElementById('total-harga');
+    const totalSpan = document.getElementById('total-harga');
+    const pengiriman = document.getElementById('pengiriman').value;
     const link = document.getElementById('checkout-link');
+
     daftar.innerHTML = '';
-    let totalHarga = 0;
-    let pesan = 'Halo, saya ingin memesan:%0A';
+    let total = 0;
+    let biayaAntar = 0;
+    let pesan = 'Halo! Saya ingin memesan:%0A';
+
     keranjang.forEach(item => {
       daftar.innerHTML += `<div>${item.nama} - Rp${item.harga}</div>`;
-      totalHarga += item.harga;
-      pesan += `- ${item.nama} (Rp${item.harga})%0A`;
+      total += item.harga;
     });
-    total.innerText = totalHarga;
-    pesan += `%0ATotal: Rp${totalHarga}`;
-    link.href = `https://wa.me/6281234567890?text=${pesan}`;
+
+    if (pengiriman === 'antar') {
+      biayaAntar = keranjang.length * 1000;
+      pesan += `%0AMetode: Diantar (+Rp1.000 x ${keranjang.length})`;
+    } else {
+      pesan += `%0AMetode: Ambil Sendiri`;
+    }
+
+    const totalBayar = total + biayaAntar;
+    pesan += `%0A%0ATotal: Rp${totalBayar}`;
+    totalSpan.innerText = totalBayar;
+    link.href = `https://wa.me/6289664363463?text=${pesan}`;
   }
 </script>
 
