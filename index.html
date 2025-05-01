@@ -1,24 +1,173 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>LapAKABogor</title>
+  <meta charset="UTF-8">
+  <title>LapAKABogor - Toko Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: Poppins, sans-serif;
       background: #f8f9fa;
-      text-align: center;
-      padding: 50px;
+      margin: 0;
+      padding: 20px;
     }
     h1 {
+      text-align: center;
       color: #e63946;
     }
-    p {
+    .kategori {
+      margin: 20px 0;
+      font-weight: bold;
       color: #264653;
+    }
+    .produk-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .produk {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 10px;
+      width: 200px;
+      background: white;
+      text-align: center;
+    }
+    .produk img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .produk h3 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+    .produk p {
+      color: #888;
+      margin: 0 0 10px;
+    }
+    .produk button {
+      background: #2a9d8f;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #keranjang-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #f4a261;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+    #keranjang-modal {
+      display: none;
+      position: fixed;
+      top: 50px;
+      right: 50px;
+      width: 300px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+    }
+    #keranjang-items {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+    .checkout-btn {
+      background: #e63946;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <h1>Selamat Datang di LapAKABogor</h1>
-  <p>Toko online UKM & IKM Mahasiswa Politeknik AKA Bogor</p>
+
+<h1>LapAKABogor</h1>
+
+<div class="kategori">Makanan</div>
+<div class="produk-container">
+  <div class="produk" data-nama="Keripik Pisang" data-harga="10000">
+    <img src="https://via.placeholder.com/200" alt="Keripik Pisang">
+    <h3>Keripik Pisang</h3>
+    <p>Rp10.000</p>
+    <button onclick="tambahKeKeranjang(this)">Tambah</button>
+  </div>
+  <div class="produk" data-nama="Bakpia" data-harga="15000">
+    <img src="https://via.placeholder.com/200" alt="Bakpia">
+    <h3>Bakpia</h3>
+    <p>Rp15.000</p>
+    <button onclick="tambahKeKeranjang(this)">Tambah</button>
+  </div>
+</div>
+
+<div class="kategori">Kerajinan</div>
+<div class="produk-container">
+  <div class="produk" data-nama="Gelang Rajut" data-harga="25000">
+    <img src="https://via.placeholder.com/200" alt="Gelang Rajut">
+    <h3>Gelang Rajut</h3>
+    <p>Rp25.000</p>
+    <button onclick="tambahKeKeranjang(this)">Tambah</button>
+  </div>
+</div>
+
+<!-- Tombol Keranjang -->
+<button id="keranjang-btn" onclick="toggleKeranjang()">🛒 Keranjang</button>
+
+<!-- Modal Keranjang -->
+<div id="keranjang-modal">
+  <h3>Keranjang Belanja</h3>
+  <div id="keranjang-items"></div>
+  <p>Total: Rp<span id="total-harga">0</span></p>
+  <a id="checkout-link" href="#" class="checkout-btn" target="_blank">Checkout WhatsApp</a>
+</div>
+
+<script>
+  let keranjang = [];
+
+  function tambahKeKeranjang(button) {
+    const produk = button.parentElement;
+    const nama = produk.getAttribute('data-nama');
+    const harga = parseInt(produk.getAttribute('data-harga'));
+    keranjang.push({nama, harga});
+    alert(nama + ' ditambahkan ke keranjang!');
+    tampilkanKeranjang();
+  }
+
+  function toggleKeranjang() {
+    const modal = document.getElementById('keranjang-modal');
+    modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function tampilkanKeranjang() {
+    const daftar = document.getElementById('keranjang-items');
+    const total = document.getElementById('total-harga');
+    const link = document.getElementById('checkout-link');
+    daftar.innerHTML = '';
+    let totalHarga = 0;
+    let pesan = 'Halo, saya ingin memesan:%0A';
+    keranjang.forEach(item => {
+      daftar.innerHTML += `<div>${item.nama} - Rp${item.harga}</div>`;
+      totalHarga += item.harga;
+      pesan += `- ${item.nama} (Rp${item.harga})%0A`;
+    });
+    total.innerText = totalHarga;
+    pesan += `%0ATotal: Rp${totalHarga}`;
+    link.href = `https://wa.me/6281234567890?text=${pesan}`;
+  }
+</script>
+
 </body>
 </html>
