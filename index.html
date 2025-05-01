@@ -1,203 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>LapAKABogor - Toko Online</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LapAKABogor Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
-      font-family: Poppins, sans-serif;
-      background: #f1f1f1;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
+      background: #f9f9f9;
+    }
+    .banner {
+      background: linear-gradient(90deg, #e63946, #2a9d8f, #f4a261, #264653);
+      color: white;
+      text-align: center;
       padding: 20px;
     }
-    h1 {
-      text-align: center;
-      color: #e63946;
-      margin-bottom: 5px;
-    }
-    p.desc {
-      text-align: center;
-      color: #555;
-      margin-top: 0;
-    }
-    .produk-container {
+    .carousel {
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
     }
-    .produk {
-      background: white;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 200px;
-      text-align: center;
-    }
-    .produk img {
+    .carousel img {
       width: 100%;
-      border-radius: 8px;
+      scroll-snap-align: center;
     }
-    .produk h3 {
-      margin: 10px 0 5px;
+    .category-title {
+      margin-left: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #264653;
     }
-    .produk p {
-      color: #777;
-      margin: 0 0 10px;
+    .product {
+      background: white;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .produk button {
+    .cart {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
       background: #2a9d8f;
       color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
+      padding: 10px 20px;
+      border-radius: 25px;
       cursor: pointer;
     }
-    #keranjang-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #f4a261;
-      border: none;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 18px;
+    .checkout-box {
+      margin: 20px;
     }
-    #keranjang-modal {
-      display: none;
-      position: fixed;
-      top: 70px;
-      right: 30px;
-      width: 320px;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-      z-index: 99;
-    }
-    #keranjang-items {
-      max-height: 220px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-    .checkout-btn {
-      background: #e63946;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      border-radius: 6px;
-      text-decoration: none;
-      display: block;
-      font-weight: bold;
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      color: #555;
-    }
-    select {
+    input[type="text"] {
       width: 100%;
-      padding: 6px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 5px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-
-<h1>LapAKABogor</h1>
-<p class="desc">Platform dagang UKM Mahasiswa Politeknik AKA Bogor</p>
-
-<div class="produk-container">
-  <div class="produk" data-nama="Keripik Pisang" data-harga="10000">
-    <img src="https://via.placeholder.com/200" alt="Keripik Pisang">
-    <h3>Keripik Pisang</h3>
-    <p>Rp10.000</p>
-    <button onclick="tambahKeKeranjang(this)">Tambah</button>
+  <div class="banner">
+    <h1>LapAKABogor</h1>
+    <p>Platform dagang UKM & IKM Mahasiswa Politeknik AKA Bogor</p>
   </div>
-  <div class="produk" data-nama="Bakpia" data-harga="15000">
-    <img src="https://via.placeholder.com/200" alt="Bakpia">
-    <h3>Bakpia</h3>
-    <p>Rp15.000</p>
-    <button onclick="tambahKeKeranjang(this)">Tambah</button>
+
+  <!-- Carousel Produk -->
+  <div class="carousel">
+    <img src="https://via.placeholder.com/728x300.png?text=Promo+1" alt="Iklan 1">
+    <img src="https://via.placeholder.com/728x300.png?text=Promo+2" alt="Iklan 2">
+    <img src="https://via.placeholder.com/728x300.png?text=Promo+3" alt="Iklan 3">
   </div>
-  <div class="produk" data-nama="Gelang Rajut" data-harga="25000">
-    <img src="https://via.placeholder.com/200" alt="Gelang Rajut">
-    <h3>Gelang Rajut</h3>
-    <p>Rp25.000</p>
-    <button onclick="tambahKeKeranjang(this)">Tambah</button>
+
+  <!-- Form Info Pembeli -->
+  <div class="checkout-box">
+    <input type="text" id="nama" placeholder="Nama Pembeli">
+    <input type="text" id="prodi" placeholder="Prodi/Kelas">
+    <input type="text" id="nohp" placeholder="Nomor WhatsApp Pembeli">
+    <input type="text" id="alamat" placeholder="Alamat (isi jika pengantaran)">
   </div>
-</div>
 
-<!-- Tombol Keranjang -->
-<button id="keranjang-btn" onclick="toggleKeranjang()">🛒</button>
+  <!-- Kategori Produk -->
+  <div id="product-list"></div>
 
-<!-- Modal Keranjang -->
-<div id="keranjang-modal">
-  <h3>Keranjang Belanja</h3>
-  <div id="keranjang-items"></div>
+  <!-- Checkout -->
+  <div class="checkout-box">
+    <label><input type="radio" name="pickup" value="ambil" checked> Ambil Sendiri</label><br>
+    <label><input type="radio" name="pickup" value="antar"> Diantar (+Rp1000/item)</label><br><br>
+    <label><input type="radio" name="payment" value="QRIS" checked> Pembayaran QRIS</label><br>
+    <label><input type="radio" name="payment" value="Cash"> Pembayaran Cash</label><br><br>
+    <button onclick="checkout()">Checkout via WhatsApp</button>
+  </div>
 
-  <label for="pengiriman">Pilih Metode:</label>
-  <select id="pengiriman" onchange="tampilkanKeranjang()">
-    <option value="ambil">Ambil Sendiri</option>
-    <option value="antar">Diantar (Rp1.000/item)</option>
-  </select>
+  <div class="cart" onclick="checkout()">
+    <i class="fas fa-shopping-cart"></i> Checkout
+  </div>
 
-  <p>Total: Rp<span id="total-harga">0</span></p>
-  <a id="checkout-link" href="#" class="checkout-btn" target="_blank">Checkout WhatsApp</a>
-</div>
+  <script>
+    const products = [
+      { id: 1, name: 'Nasi Goreng Spesial', price: 12000, category: 'Makanan Berat' },
+      { id: 2, name: 'Keripik Pisang', price: 5000, category: 'Makanan Ringan' },
+      { id: 3, name: 'Minuman Herbal', price: 8000, category: 'Minuman' },
+      { id: 4, name: 'Reagen Kimia X', price: 30000, category: 'Alat dan Bahan Kimia' },
+      { id: 5, name: 'Sabun Organik Mahasiswa', price: 10000, category: 'Produk Inovasi Mahasiswa AKA' },
+      { id: 6, name: 'Produk Lainnya', price: 7000, category: 'Lain-lain' }
+    ];
 
-<script>
-  let keranjang = [];
+    const cart = {};
 
-  function tambahKeKeranjang(button) {
-    const produk = button.parentElement;
-    const nama = produk.getAttribute('data-nama');
-    const harga = parseInt(produk.getAttribute('data-harga'));
-    keranjang.push({nama, harga});
-    alert(nama + ' ditambahkan ke keranjang!');
-    tampilkanKeranjang();
-  }
-
-  function toggleKeranjang() {
-    const modal = document.getElementById('keranjang-modal');
-    modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
-  }
-
-  function tampilkanKeranjang() {
-    const daftar = document.getElementById('keranjang-items');
-    const totalSpan = document.getElementById('total-harga');
-    const pengiriman = document.getElementById('pengiriman').value;
-    const link = document.getElementById('checkout-link');
-
-    daftar.innerHTML = '';
-    let total = 0;
-    let biayaAntar = 0;
-    let pesan = 'Halo! Saya ingin memesan:%0A';
-
-    keranjang.forEach(item => {
-      daftar.innerHTML += `<div>${item.nama} - Rp${item.harga}</div>`;
-      total += item.harga;
-    });
-
-    if (pengiriman === 'antar') {
-      biayaAntar = keranjang.length * 1000;
-      pesan += `%0AMetode: Diantar (+Rp1.000 x ${keranjang.length})`;
-    } else {
-      pesan += `%0AMetode: Ambil Sendiri`;
+    function renderProducts() {
+      const list = document.getElementById('product-list');
+      const categories = [...new Set(products.map(p => p.category))];
+      categories.forEach(cat => {
+        const title = document.createElement('div');
+        title.className = 'category-title';
+        title.textContent = cat;
+        list.appendChild(title);
+        products.filter(p => p.category === cat).forEach(product => {
+          const div = document.createElement('div');
+          div.className = 'product';
+          div.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>Harga: Rp${product.price}</p>
+            <input type="number" min="0" value="0" onchange="updateCart(${product.id}, this.value)">
+          `;
+          list.appendChild(div);
+        });
+      });
     }
 
-    const totalBayar = total + biayaAntar;
-    pesan += `%0A%0ATotal: Rp${totalBayar}`;
-    totalSpan.innerText = totalBayar;
-    link.href = `https://wa.me/6289664363463?text=${pesan}`;
-  }
-</script>
+    function updateCart(id, qty) {
+      if (qty > 0) {
+        cart[id] = parseInt(qty);
+      } else {
+        delete cart[id];
+      }
+    }
 
+    function checkout() {
+      const nama = document.getElementById('nama').value;
+      const prodi = document.getElementById('prodi').value;
+      const nohp = document.getElementById('nohp').value;
+      const alamat = document.getElementById('alamat').value;
+      const antar = document.querySelector('input[name="pickup"]:checked').value === 'antar';
+      const payment = document.querySelector('input[name="payment"]:checked').value;
+
+      if (!nama || !prodi || !nohp) {
+        alert('Mohon isi semua data pembeli.');
+        return;
+      }
+
+      let message = '*Pesanan LapAKABogor:*%0A';
+      message += `Nama: ${nama}%0AProdi/Kelas: ${prodi}%0ANo HP: ${nohp}%0A`;
+      if (antar) message += `Alamat: ${alamat}%0A`;
+
+      let total = 0;
+      Object.keys(cart).forEach(id => {
+        const product = products.find(p => p.id == id);
+        const qty = cart[id];
+        let subtotal = qty * product.price + (antar ? 1000 * qty : 0);
+        total += subtotal;
+        message += `- ${product.name} x ${qty} = Rp${subtotal}%0A`;
+      });
+
+      message += antar ? '%0A*Pengiriman: Diantar*' : '%0A*Pengiriman: Ambil Sendiri*';
+      message += `%0A*Metode Pembayaran: ${payment}*`;
+      message += `%0A*Total Bayar: Rp${total}*`;
+
+      window.open(`https://wa.me/${nohp}?text=${message}`, '_blank');
+    }
+
+    renderProducts();
+  </script>
 </body>
 </html>
